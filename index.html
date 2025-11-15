@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option Pembelian TikTok & Instagram</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body{
+        font-family: 'Poppins', sans-serif;
+        background:#c7e9ff;
+        padding:20px;
+        color:#1b365d;
+    }
+    h2{
+        text-align:center;
+        color:#1b365d;
+        font-weight:700;
+        letter-spacing:0.5px;
+    }
+    .box{
+        background:white;
+        padding:18px;
+        border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.15);
+        max-width:400px;
+        margin:18px auto;
+        color:#1b365d;
+        font-weight:500;
+    }
+    label{
+        font-weight:600;
+        margin-bottom:6px;
+        color:#1b365d;
+        font-size:14px;
+    }
+    select, input{
+        width:100%;
+        padding:12px;
+        border-radius:10px;
+        border:1px solid #9ab3d1;
+        margin-bottom:15px;
+        color:#1b365d;
+        font-weight:500;
+        font-size:15px;
+    }
+    .harga-box{
+        background:#d4edff;
+        padding:12px;
+        border-radius:10px;
+        margin-bottom:15px;
+        font-weight:600;
+        color:#1b365d;
+        text-align:center;
+        border:1px solid #a3c9ff;
+        font-size:16px;
+    }
+    button{
+        width:100%;
+        padding:12px;
+        font-size:15px;
+        font-weight:600;
+        background:#1b365d;
+        color:white;
+        border:0;
+        border-radius:10px;
+        cursor:pointer;
+        transition:0.2s;
+    }
+    button:hover{
+        background:#162a49;
+    }
+</style>
+
+</head>
+<body>
+
+<h2>SERVICE TAMBAH FOLLOWERS , LIKES & VIEWS</h2>
+
+<div class="box">
+    <label>Platform</label>
+    <select id="platform" onchange="updateHarga(); updateLinkField();">
+        <option value="Tiktok">TikTok</option>
+        <option value="Instagram">Instagram</option>
+    </select>
+
+    <label>Jenis Pesanan</label>
+    <select id="jenis" onchange="updateHarga(); updateLinkField();">
+        <option value="Followers">Followers</option>
+        <option value="Likes">Likes</option>
+        <option value="Views">Views</option>
+    </select>
+
+    <label>Kuantiti (Minimum 100)</label>
+    <input type="number" id="qty" placeholder="Contoh: 100" oninput="updateHarga()" min="1">
+
+    <label id="labelLink">Masukkan link</label>
+    <input type="text" id="linkInput" placeholder="Masukkan link anda di sini">
+
+    <div id="harga" class="harga-box">RM 0.00</div>
+
+    <button onclick="buatOrder()">Buat Pesanan</button>
+</div>
+
+<script>
+var hargaPerUnit = {
+    Tiktok:{
+        Followers:0.010,
+        Likes:0.0030,
+        Views:0.003
+    },
+    Instagram:{
+        Followers:0.012,
+        Likes:0.0030,
+        Views:0.003
+    }
+};
+
+function updateHarga(){
+    const platform = document.getElementById("platform").value;
+    const jenis = document.getElementById("jenis").value;
+    const qty = parseInt(document.getElementById("qty").value);
+
+    if(!qty || qty < 1){
+        document.getElementById("harga").innerHTML = "RM 0.00";
+        return;
+    }
+
+    const hargaUnit = hargaPerUnit[platform][jenis];
+    const total = qty * hargaUnit;
+
+    document.getElementById("harga").innerHTML = "RM " + total.toFixed(2);
+}
+
+function updateLinkField(){
+    const platform = document.getElementById("platform").value;
+    const jenis = document.getElementById("jenis").value;
+
+    let label = document.getElementById("labelLink");
+    let input = document.getElementById("linkInput");
+
+    if(platform === "Tiktok"){
+        if(jenis === "Followers"){
+            label.innerHTML = "Masukkan link akaun TikTok";
+            input.placeholder = "https://tiktok.com/@username";
+        } else {
+            label.innerHTML = "Masukkan link video TikTok";
+            input.placeholder = "https://tiktok.com/video/...";
+        }
+    }
+
+    if(platform === "Instagram"){
+        if(jenis === "Followers"){
+            label.innerHTML = "Masukkan link akaun Instagram";
+            input.placeholder = "https://instagram.com/username";
+        } else {
+            label.innerHTML = "Masukkan link video Instagram";
+            input.placeholder = "https://instagram.com/reel/...";
+        }
+    }
+}
+
+function buatOrder(){
+    const platform = document.getElementById("platform").value;
+    const jenis = document.getElementById("jenis").value;
+    const qty = document.getElementById("qty").value;
+    const link = document.getElementById("linkInput").value;
+    const hargaUnit = hargaPerUnit[platform][jenis];
+    const total = (qty * hargaUnit).toFixed(2);
+
+    const teks = encodeURIComponent(
+        `Saya ingin order:\nPlatform: ${platform}\nJenis: ${jenis}\nKuantiti: ${qty}\nLink: ${link}\nHarga: RM ${total}`
+    );
+
+    window.open(`https://wa.me/601153922099?text=${teks}`, "_blank");
+}
+
+updateLinkField();
+</script>
+
+<div class="box">
+    <h3 style="text-align:center; font-weight:700; margin-bottom:10px; color:#1b365d;">CARA ORDER</h3>
+
+    <ul style="padding-left:18px; line-height:1.6; color:#1b365d; font-weight:500;">
+        <li>Pilih platform yang anda ingin tambah followers, likes & views.</li>
+        <li>Pilih jenis pesanan seperti followers, likes & views.</li>
+        <li>Masukkan kuantiti yang anda ingin menambah ke akaun anda ataupun video anda.</li>
+        <li>Masukkan link akaun anda sekiranya anda memilih jenis pesanan <b>'Followers'</b>.</li>
+        <li>Jika <b>Likes & Views</b>, sila copy link video anda dan tampal di ruangan atas.</li>
+    </ul>
+</div>
+
+<p style="text-align:center; margin-top:25px; font-size:14px; font-weight:600; color:#1b365d;">
+     Boost Followers, Likes & Views by Epul
+</p>
+
+</body>
+</html>
